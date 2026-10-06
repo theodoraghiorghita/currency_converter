@@ -13,7 +13,7 @@ class RatesPage extends StatefulWidget {
   });
 
   @override
-  _RatesPageState createState() => _RatesPageState();
+  State<RatesPage> createState() => _RatesPageState();
 }
 
 class _RatesPageState extends State<RatesPage> {

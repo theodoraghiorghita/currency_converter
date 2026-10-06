@@ -13,7 +13,7 @@ class CurrencySelectorPage extends StatefulWidget {
   });
 
   @override
-  _CurrencySelectorPageState createState() => _CurrencySelectorPageState();
+  State<CurrencySelectorPage> createState() => _CurrencySelectorPageState();
 }
 
 class _CurrencySelectorPageState extends State<CurrencySelectorPage> {

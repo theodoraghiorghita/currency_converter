@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -83,9 +83,8 @@ class _HomePageState extends State<HomePage> {
       LocationService.startCurrencyListener(
         currencyData: currencyData!,
         onCurrencyChanged: (currency) {
-          if (!autoCurrencyEnabled) return;
-          if (currencyData == null) return;
-          if (currency == fromCurrency) return;
+          if (!autoCurrencyEnabled || !mounted) return;
+          if (currencyData == null || currency == fromCurrency) return;
           setState(() => fromCurrency = currency);
           _updateConversion();
         },
@@ -101,7 +100,7 @@ class _HomePageState extends State<HomePage> {
       toCurrency ??= "USD";
       _updateConversion();
     } finally {
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -130,7 +129,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    if (!autoCurrencyEnabled) LocationService.stopCurrencyListener();
+    LocationService.stopCurrencyListener();
     _controller.dispose();
     _amountFocusNode.dispose();
     super.dispose();
@@ -365,6 +364,7 @@ class _HomePageState extends State<HomePage> {
             ),
           );
 
+          if (!mounted) return;
           if (result != null) {
             if (isFrom && result == toCurrency) {
               ScaffoldMessenger.of(context).showSnackBar(
